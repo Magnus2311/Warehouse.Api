@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MongoDbTemplate\MongoDbTemplateRepository\Warehouse.Database.csproj" />
+    <ProjectReference Include="..\Warehouse.Database\Warehouse.Database.csproj" />
   </ItemGroup>
 
 </Project>
