@@ -58,9 +58,9 @@ namespace Warehouse.Api
                 var exception = context.Features
                     .Get<IExceptionHandlerPathFeature>()
                     .Error;
-                app.ApplicationServices.GetService<ILogger>().LogError(exception.Message);
                 var response = new { error = exception.Message };
-                await context.Response.WriteAsJsonAsync(response);
+                await context.Response.WriteAsJsonAsync(response)
+                app.ApplicationServices.GetService<ILogger>().LogError(exception.Message);
             }));
             app.UseRouting();
 
