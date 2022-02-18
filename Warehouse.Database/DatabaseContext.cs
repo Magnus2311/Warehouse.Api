@@ -18,7 +18,7 @@ namespace Warehouse.Database
         public DatabaseContext()
         {
             //change {database name} with database's name (curly brackets should not be included)
-            _client = new MongoClient($"mongodb+srv://{_configuration["MongoCredentials:Username"]}:{_configuration["MongoCredentials:Password"]}{_configuration["MongoCredentials:Cluster"]}.rdkdn.mongodb.net/warehouse?retryWrites=true&w=majority");
+            _client = new MongoClient(_configuration.GetConnectionString("DefaultConnection"));
             //Change database name which you want to use
             _db = _client.GetDatabase("warehouse");
         }
