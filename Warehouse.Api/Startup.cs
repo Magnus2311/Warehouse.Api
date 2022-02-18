@@ -1,9 +1,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Warehouse.Api.Services;
 using Warehouse.Api.Services.Mappers;
@@ -50,6 +53,15 @@ namespace Warehouse.Api
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Warehouse.Api v1"));
             app.UseHttpsRedirection();
 
+            app.UseExceptionHandler(c => c.Run(async context =>
+            {
+                var exception = context.Features
+                    .Get<IExceptionHandlerPathFeature>()
+                    .Error;
+                app.ApplicationServices.GetService<ILogger>().LogError(exception.Message);
+                var response = new { error = exception.Message };
+                await context.Response.WriteAsJsonAsync(response);
+            }));
             app.UseRouting();
 
             app.UseCors("corsapp");
