@@ -16,7 +16,7 @@ namespace Warehouse.Database
         {
             _configuration = configuration;
 
-            _client = new MongoClient($"mongodb://{_configuration["DB_Username"]}:{_configuration["DB_Password"]}@{_configuration["DB_Cluster"]}.rdkdn.mongodb.net/futbot?retryWrites=true&w=majority&connect=replicaSet");
+            _client = new MongoClient($"mongodb+srv://{_configuration["DB_Username"]}:{_configuration["DB_Password"]}{_configuration["DB_Cluster"]}.rdkdn.mongodb.net/warehouse?retryWrites=true&w=majority");
 
             _db = _client.GetDatabase("warehouse");
         }
