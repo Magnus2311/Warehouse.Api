@@ -17,9 +17,13 @@ namespace Warehouse.Api.Controllers
             _itemsService = itemsService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public async Task<ItemDTO> Add(ItemDTO itemDTO)
                 => await _itemsService.Add(itemDTO);
+
+        [HttpPut]
+        public async Task Update(ItemDTO itemDTO)
+                => await _itemsService.Update(itemDTO);
 
         [HttpGet]
         public async Task<IEnumerable<ItemDTO>> Get()
