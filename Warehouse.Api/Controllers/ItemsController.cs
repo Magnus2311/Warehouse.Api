@@ -30,7 +30,7 @@ namespace Warehouse.Api.Controllers
                 => await _itemsService.Get();
 
         [HttpDelete]
-        public async Task Delete(string itemId)
+        public async Task Delete([FromBody] string itemId)
                 => await _itemsService.Delete(itemId);
     }
 }
