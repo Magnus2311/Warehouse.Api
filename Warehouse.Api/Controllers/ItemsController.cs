@@ -28,5 +28,9 @@ namespace Warehouse.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<ItemDTO>> Get()
                 => await _itemsService.Get();
+
+        [HttpDelete]
+        public async Task Delete(string itemId)
+                => await _itemsService.Delete(itemId);
     }
 }
