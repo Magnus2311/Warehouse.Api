@@ -3,11 +3,11 @@ using Warehouse.Database.Models;
 
 namespace Warehouse.Database.Repositories
 {
-    public class ItemsRepository : BaseRepository<Item>
+    public class PartnersRepository : BaseRepository<Partner>
     {
-        public ItemsRepository(IConfiguration configuration) : base(configuration)
+        public PartnersRepository(IConfiguration configuration) : base(configuration)
         {
-                
+
         }
     }
 }

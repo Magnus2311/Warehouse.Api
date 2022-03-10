@@ -10,6 +10,9 @@ namespace Warehouse.Api.Services.Mappers
         {
             CreateMap<ItemDTO, Item>();
             CreateMap<Item, ItemDTO>();
+
+            CreateMap<PartnerDTO, Partner>();
+            CreateMap<Partner, PartnerDTO>();
         }
     }
 }

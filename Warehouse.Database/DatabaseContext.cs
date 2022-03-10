@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Azure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using System.Web;
 
 namespace Warehouse.Database
 {
@@ -13,13 +15,9 @@ namespace Warehouse.Database
         public DatabaseContext(IConfiguration configuration)
         {
             _configuration = configuration;
-        }
 
-        public DatabaseContext()
-        {
-            //change {database name} with database's name (curly brackets should not be included)
-            _client = new MongoClient($"mongodb+srv://{_configuration["MongoCredentials:Username"]}:{_configuration["MongoCredentials:Password"]}{_configuration["MongoCredentials:Cluster"]}.rdkdn.mongodb.net/warehouse?retryWrites=true&w=majority");
-            //Change database name which you want to use
+            _client = new MongoClient($"mongodb+srv://{_configuration["DB_Username"]}:{_configuration["DB_Password"]}{_configuration["DB_Cluster"]}.rdkdn.mongodb.net/warehouse?retryWrites=true&w=majority");
+
             _db = _client.GetDatabase("warehouse");
         }
     }

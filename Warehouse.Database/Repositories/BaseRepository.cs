@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Database.Interfaces;
@@ -10,7 +11,7 @@ namespace Warehouse.Database.Repositories
     {
         protected readonly IMongoCollection<TEntity> _collection;
 
-        public BaseRepository()
+        public BaseRepository(IConfiguration configuration) : base(configuration)
         {
             _collection = _db.GetCollection<TEntity>(typeof(TEntity).Name);
         }

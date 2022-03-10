@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Api.Models.DTOs;
@@ -29,5 +28,11 @@ namespace Warehouse.Api.Services
 
         public async Task<IEnumerable<ItemDTO>> Get()
             => _mapper.Map<IEnumerable<ItemDTO>>(await _repository.GetAll());
+
+        public async Task Update(ItemDTO itemDTO)
+            => await _repository.Update(_mapper.Map<Item>(itemDTO));
+
+        public async Task Delete(string itemId)
+            => await _repository.Delete(itemId);
     }
 }
