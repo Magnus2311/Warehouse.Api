@@ -35,6 +35,7 @@ namespace Warehouse.Api
             services.AddScoped<ItemsRepository>();
             services.AddScoped<ItemsService>();
             services.AddScoped<PartnersRepository>();
+            services.AddScoped<PartnersService>();
             AddMapper(services);
             services.AddCors(p => p.AddPolicy("corsapp", builder =>
             {
