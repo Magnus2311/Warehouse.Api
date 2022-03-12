@@ -12,5 +12,6 @@ namespace Warehouse.Database.Models
         public string Name { get; set; }
         public double BasePrice { get; set; }
         public double SellPrice { get; set; }
+        public bool IsRemoved { get; set; }
     }
 }
