@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -8,9 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Warehouse.Api.Services;
-using Warehouse.Api.Services.Mappers;
-using Warehouse.Database.Repositories;
+using Warehouse.Api.Helpers.ExtensionMethods;
 
 namespace Warehouse.Api
 {
@@ -32,15 +29,13 @@ namespace Warehouse.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Warehouse.Api", Version = "v1" });
             });
-            services.AddScoped<ItemsRepository>();
-            services.AddScoped<ItemsService>();
-            services.AddScoped<PartnersRepository>();
-            services.AddScoped<PartnersService>();
-            AddMapper(services);
+            
             services.AddCors(p => p.AddPolicy("corsapp", builder =>
             {
                 builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
             }));
+
+            services.RegisterService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,17 +69,6 @@ namespace Warehouse.Api
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private static void AddMapper(IServiceCollection services)
-        {
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MapperProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
         }
     }
 }
