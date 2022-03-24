@@ -13,7 +13,7 @@ namespace Warehouse.Database.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
-        public IEnumerable<string> ItemsId { get; set; } = Enumerable.Empty<string>();
+        public IEnumerable<SaleItem> SaleItems { get; set; } = Enumerable.Empty<SaleItem>();
         public string PartnerId { get; set; }
         public string Description { get; set; }
     }
