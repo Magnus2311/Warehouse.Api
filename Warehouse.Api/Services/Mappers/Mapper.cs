@@ -16,6 +16,9 @@ namespace Warehouse.Api.Services.Mappers
 
             CreateMap<SaleDTO, Sale>();
             CreateMap<Sale, SaleDTO>();
+
+            CreateMap<SaleItemDTO, SaleItem>();
+            CreateMap<SaleItem, SaleItemDTO>();
         }
     }
 }
