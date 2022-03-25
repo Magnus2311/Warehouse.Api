@@ -1,7 +1,9 @@
-﻿namespace Warehouse.Database.Interfaces
+﻿using MongoDB.Bson;
+
+namespace Warehouse.Database.Interfaces
 {
     public interface IEntity
     {
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
     }
 }
