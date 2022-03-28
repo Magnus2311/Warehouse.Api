@@ -33,7 +33,7 @@ namespace Warehouse.Api.Services
         public async Task Update(SaleDTO saleDTO)
             => await _repository.Update(_mapper.Map<Sale>(saleDTO));
 
-        public async Task Delete(ObjectId saleId)
-            => await _repository.Delete(saleId);
+        public async Task Delete(string saleId)
+            => await _repository.Delete(new ObjectId(saleId));
     }
 }
