@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MongoDB.Bson;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Database.Interfaces;
 using Warehouse.Database.Repositories;
@@ -17,10 +18,10 @@ namespace Warehouse.Api.Services
         public virtual async Task Add(IEntity entity) 
             => await _baseRepository.Add(entity);
 
-        public virtual async Task Delete(string id)
+        public virtual async Task Delete(ObjectId id)
             => await _baseRepository.Delete(id);
 
-        public virtual async Task<IEntity> Get(string id)
+        public virtual async Task<IEntity> Get(ObjectId id)
             => await _baseRepository.Get(id);
 
         public virtual async Task<IEnumerable<IEntity>> GetAll()

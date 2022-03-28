@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Api.Models.DTOs;
@@ -32,7 +33,7 @@ namespace Warehouse.Api.Services
         public async Task Update(ItemDTO itemDTO)
             => await _repository.Update(_mapper.Map<Item>(itemDTO));
 
-        public async Task Delete(string itemId)
+        public async Task Delete(ObjectId itemId)
             => await _repository.Delete(itemId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Api.Models.DTOs;
@@ -30,7 +31,7 @@ namespace Warehouse.Api.Controllers
                 => await _partnersService.Get();
 
         [HttpDelete]
-        public async Task Delete([FromBody] string partnerId)
+        public async Task Delete([FromBody] ObjectId partnerId)
                 => await _partnersService.Delete(partnerId);
     }
 }
