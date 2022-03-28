@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,10 +20,10 @@ namespace Warehouse.Database.Repositories
         public async Task Add(TEntity entity)
             => await _collection.InsertOneAsync(entity);
 
-        public async Task Delete(string id)
+        public async Task Delete(ObjectId id)
             => await _collection.FindOneAndDeleteAsync(Builders<TEntity>.Filter.Eq(e => e.Id, id));
 
-        public async Task<TEntity> Get(string id)
+        public async Task<TEntity> Get(ObjectId id)
             => await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
 
         public async Task<IEnumerable<TEntity>> GetAll()
