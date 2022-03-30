@@ -12,5 +12,6 @@ namespace Warehouse.Database.Models
         public decimal Price { get; set; }
         public decimal Total { get; set; }
         public string ItemId { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

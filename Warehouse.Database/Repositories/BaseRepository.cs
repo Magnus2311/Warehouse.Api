@@ -21,10 +21,20 @@ namespace Warehouse.Database.Repositories
             => await _collection.InsertOneAsync(entity);
 
         public async Task Delete(ObjectId id)
-            => await _collection.FindOneAndDeleteAsync(Builders<TEntity>.Filter.Eq(e => e.Id, id));
-
+        {
+            var entity = await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
+            entity.IsDeleted = true;
+            await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
+        }
+            
         public async Task<TEntity> Get(ObjectId id)
             => await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<TEntity>> GetActive()
+            => await (await _collection.FindAsync(Builders<TEntity>.Filter.Eq(e => e.IsDeleted, false))).ToListAsync();
+
+        public async Task<IEnumerable<TEntity>> GetDeleted()
+            => await (await _collection.FindAsync(Builders<TEntity>.Filter.Eq(e => e.IsDeleted, true))).ToListAsync();
 
         public async Task<IEnumerable<TEntity>> GetAll()
             => await (await _collection.FindAsync(Builders<TEntity>.Filter.Empty)).ToListAsync();

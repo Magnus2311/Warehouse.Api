@@ -27,7 +27,7 @@ namespace Warehouse.Api.Services
         }
 
         public async Task<IEnumerable<PartnerDTO>> Get()
-            => _mapper.Map<IEnumerable<PartnerDTO>>(await _partnersRepository.GetAll());
+            => _mapper.Map<IEnumerable<PartnerDTO>>(await _partnersRepository.GetActive());
 
         public async Task Update(PartnerDTO itemDTO)
             => await _partnersRepository.Update(_mapper.Map<Partner>(itemDTO));

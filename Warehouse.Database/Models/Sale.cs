@@ -16,5 +16,6 @@ namespace Warehouse.Database.Models
         public string PartnerId { get; set; }
         public string Description { get; set; }
         public decimal TotalAmount { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Warehouse.Database.Interfaces
 {
     public interface IRepository<T> where T : class, IEntity
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetActive();
         Task<T> Get(ObjectId id);
         Task Add(T entity);
         Task Update(T entity);
