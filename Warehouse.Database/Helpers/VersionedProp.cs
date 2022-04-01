@@ -1,13 +1,11 @@
-﻿using MongoDB.Bson;
-using System;
-using Warehouse.Database.Interfaces;
+﻿using System;
 
 namespace Warehouse.Database.Helpers
 {
-    public class VersionedProp
+    public class VersionedProp<T>
     {
         public long Version { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public BsonDocument Value { get; set; }
+        public T Value { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Warehouse.Database.Models
                 {
                     var type = prop.GetType();
                     var historyValue = props.FirstOrDefault(current => current.Name == prop.Name + "_history")?.GetValue(this);
-                    var historyProp = historyValue != null ? (historyValue as IEnumerable<VersionedProp>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp>();
+                    var historyProp = historyValue != null ? (historyValue as IEnumerable<VersionedProp<dynamic>>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp<dynamic>>();
                     var latestVersion = historyProp.LastOrDefault();
                     if (latestVersion != null)
                     {

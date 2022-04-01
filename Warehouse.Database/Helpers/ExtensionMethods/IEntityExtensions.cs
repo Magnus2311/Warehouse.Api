@@ -29,15 +29,15 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
                     var newValue = prop.GetValue(newEntity);
                     var historyProp = props.FirstOrDefault(current => current.Name == prop.Name + "_history");
                     var historyVal = historyProp?.GetValue(entity);
-                    var valList = historyVal != null ? (historyVal as IEnumerable<VersionedProp>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp>();
+                    var valList = historyVal != null ? (historyVal as IEnumerable<VersionedProp<dynamic>>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp<dynamic>>();
 
                     if (!Equals(oldValue, newValue))
                     {
-                        historyVal = valList.Append(new VersionedProp
+                        historyVal = valList.Append(new VersionedProp<dynamic>
                         {
                             UpdatedDate = DateTime.Now,
                             Version = (long)entity.GetType().GetProperties().FirstOrDefault(prop => prop.Name == "Version").GetValue(entity),
-                            Value = newValue.ToBsonDocument()
+                            Value = newValue
                         });
                     }
                     historyProp.SetValue(newEntity, historyVal);
@@ -62,11 +62,11 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
                 else
                 {
                     var historyProp = props.FirstOrDefault(current => current.Name == prop.Name + "_history");
-                    IEnumerable<VersionedProp> historyVal = new List<VersionedProp> { new VersionedProp
+                    IEnumerable<VersionedProp<dynamic>> historyVal = new List<VersionedProp<dynamic>> { new VersionedProp<dynamic>
                     {
                         Version = entity.Version,
                         UpdatedDate = DateTime.Now,
-                        Value = prop.GetValue(entity).ToBsonDocument()
+                        Value = prop.GetValue(entity)
                     } };
 
                     historyProp.SetValue(entity, historyVal);
