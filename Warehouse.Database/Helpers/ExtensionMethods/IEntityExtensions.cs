@@ -29,11 +29,11 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
                     var newValue = prop.GetValue(newEntity);
                     var historyProp = props.FirstOrDefault(current => current.Name == prop.Name + "_history");
                     var historyVal = historyProp?.GetValue(entity);
-                    var valList = historyVal != null ? (historyVal as IEnumerable<VersionedProp<dynamic>>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp<dynamic>>();
+                    var valList = historyVal != null ? (historyVal as IEnumerable<VersionedProp>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp>();
 
                     if (!Equals(oldValue, newValue))
                     {
-                        historyVal = valList.Append(new VersionedProp<dynamic>
+                        historyVal = valList.Append(new VersionedProp
                         {
                             UpdatedDate = DateTime.Now,
                             Version = (long)entity.GetType().GetProperties().FirstOrDefault(prop => prop.Name == "Version").GetValue(entity),
@@ -62,7 +62,7 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
                 else
                 {
                     var historyProp = props.FirstOrDefault(current => current.Name == prop.Name + "_history");
-                    IEnumerable<VersionedProp<dynamic>> historyVal = new List<VersionedProp<dynamic>> { new VersionedProp<dynamic>
+                    IEnumerable<VersionedProp> historyVal = new List<VersionedProp> { new VersionedProp
                     {
                         Version = entity.Version,
                         UpdatedDate = DateTime.Now,

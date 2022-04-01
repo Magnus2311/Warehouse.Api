@@ -2,10 +2,10 @@
 
 namespace Warehouse.Database.Helpers
 {
-    public class VersionedProp<T>
+    public class VersionedProp
     {
         public long Version { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public T Value { get; set; }
+        public dynamic Value { get; set; }
     }
 }
