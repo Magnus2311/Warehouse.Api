@@ -1,16 +1,19 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using Warehouse.Database.Interfaces;
+﻿using System.Collections.Generic;
+using Warehouse.Database.Helpers;
+using Warehouse.Database.Models.Attributes;
 
 namespace Warehouse.Database.Models
 {
-    public class Item : IEntity
+    public class Item : BaseEntity
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+        [BindedProp]
         public string Name { get; set; }
+        public IEnumerable<VersionedProp> Name_history { get; set; }
+        [BindedProp]
         public double BasePrice { get; set; }
+        public IEnumerable<VersionedProp> BasePrice_history { get; set; }
+        [BindedProp]
         public double SellPrice { get; set; }
-        public bool IsRemoved { get; set; }
+        public IEnumerable<VersionedProp> SellPrice_history { get; set; }
     }
 }
