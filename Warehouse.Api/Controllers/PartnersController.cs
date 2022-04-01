@@ -31,7 +31,7 @@ namespace Warehouse.Api.Controllers
                 => await _partnersService.Get();
 
         [HttpDelete]
-        public async Task Delete([FromBody] ObjectId partnerId)
+        public async Task Delete([FromBody] string partnerId)
                 => await _partnersService.Delete(partnerId);
     }
 }
