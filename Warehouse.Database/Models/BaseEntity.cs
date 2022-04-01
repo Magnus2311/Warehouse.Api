@@ -38,5 +38,7 @@ namespace Warehouse.Database.Models
         public ObjectId Id { get; set; }
         public bool IsDeleted { get; set; }
         public long Version { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }

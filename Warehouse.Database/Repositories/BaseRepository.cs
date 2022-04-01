@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Database.Helpers.ExtensionMethods;
@@ -20,6 +21,7 @@ namespace Warehouse.Database.Repositories
 
         public async Task Add(TEntity entity)
         {
+            entity.CreatedDate = DateTime.Now;
             entity.InitHistory();
             await _collection.InsertOneAsync(entity);
         }
@@ -48,6 +50,7 @@ namespace Warehouse.Database.Repositories
             var oldEntity = await (await _collection.FindAsync(e => e.Id == entity.Id)).FirstOrDefaultAsync();
             entity.Version = ++oldEntity.Version;
             oldEntity.UpdateHistoryForChanges(entity);
+            entity.UpdatedDate = DateTime.Now;
 
             await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
         }
