@@ -28,7 +28,7 @@ namespace Warehouse.Api.Services
         }
 
         public async Task<IEnumerable<SaleDTO>> Get()
-            => _mapper.Map<IEnumerable<SaleDTO>>(await _repository.GetActive());
+            => _mapper.Map<IEnumerable<SaleDTO>>(await _repository.GetAll());
 
         public async Task Update(SaleDTO saleDTO)
             => await _repository.Update(_mapper.Map<Sale>(saleDTO));

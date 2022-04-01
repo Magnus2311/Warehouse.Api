@@ -1,8 +1,6 @@
-﻿using Microsoft.Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using System.Web;
 
 namespace Warehouse.Database
 {

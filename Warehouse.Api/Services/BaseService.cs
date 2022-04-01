@@ -24,7 +24,7 @@ namespace Warehouse.Api.Services
         public virtual async Task<IEntity> Get(ObjectId id)
             => await _baseRepository.Get(id);
 
-        public virtual async Task<IEnumerable<IEntity>> GetAll()
+        public virtual async Task<IEnumerable<IEntity>> GetActive()
             => await _baseRepository.GetActive();
 
         public virtual async Task Update(IEntity entity)

@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Warehouse.Database.Helpers.ExtensionMethods;
 using Warehouse.Database.Interfaces;
 
 namespace Warehouse.Database.Repositories
@@ -18,7 +19,10 @@ namespace Warehouse.Database.Repositories
         }
 
         public async Task Add(TEntity entity)
-            => await _collection.InsertOneAsync(entity);
+        {
+            entity.InitHistory();
+            await _collection.InsertOneAsync(entity);
+        }
 
         public async Task Delete(ObjectId id)
         {
@@ -40,6 +44,12 @@ namespace Warehouse.Database.Repositories
             => await (await _collection.FindAsync(Builders<TEntity>.Filter.Empty)).ToListAsync();
 
         public async Task Update(TEntity entity)
-            => await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
+        {
+            var oldEntity = await (await _collection.FindAsync(e => e.Id == entity.Id)).FirstOrDefaultAsync();
+            entity.Version = ++oldEntity.Version;
+            oldEntity.UpdateHistoryForChanges(entity);
+
+            await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
+        }
     }
 }
