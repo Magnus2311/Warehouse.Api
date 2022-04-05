@@ -8,12 +8,15 @@ namespace Warehouse.Database.Models
     {
         [BindedProp]
         public string Name { get; set; }
+        [HistoryProp(nameof(Name))]
         public IEnumerable<VersionedProp> Name_history { get; set; }
         [BindedProp]
         public double BasePrice { get; set; }
+        [HistoryProp(nameof(BasePrice))]
         public IEnumerable<VersionedProp> BasePrice_history { get; set; }
         [BindedProp]
         public double SellPrice { get; set; }
+        [HistoryProp(nameof(SellPrice))]
         public IEnumerable<VersionedProp> SellPrice_history { get; set; }
     }
 }
