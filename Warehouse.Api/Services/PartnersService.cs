@@ -32,7 +32,7 @@ namespace Warehouse.Api.Services
         public async Task Update(PartnerDTO itemDTO)
             => await _partnersRepository.Update(_mapper.Map<Partner>(itemDTO));
 
-        public async Task Delete(ObjectId itemId)
-            => await _partnersRepository.Delete(itemId);
+        public async Task Delete(string itemId)
+            => await _partnersRepository.Delete(new ObjectId(itemId));
     }
 }
