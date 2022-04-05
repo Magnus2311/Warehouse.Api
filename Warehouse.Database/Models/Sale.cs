@@ -9,8 +9,6 @@ namespace Warehouse.Database.Models
     {
         [BindedProp(BindedPropType.IEnumerable)]
         public IEnumerable<SaleItem> SaleItems { get; set; } = Enumerable.Empty<SaleItem>();
-        [HistoryProp(nameof(SaleItems))]
-        public IEnumerable<IEnumerable<VersionedProp>> SaleItems_history { get; set; }
         [BindedProp]
         public string PartnerId { get; set; }
         [HistoryProp(nameof(PartnerId))]

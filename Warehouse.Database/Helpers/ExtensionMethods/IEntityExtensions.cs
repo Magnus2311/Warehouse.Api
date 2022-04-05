@@ -21,41 +21,60 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
             {
                 if (prop.PropertyType.IsClass && prop.PropertyType.Name != "String")
                 {
+                    var oldProp = prop.GetValue(entity) as IEntity;
+                    var newProp = prop.GetValue(newEntity) as IEntity;
+                    oldProp.UpdateHistoryForChanges(newProp);
+                }
+                else if (prop.PropertyType.Name.Contains("IEnumerable"))
+                {
                     if ((prop.GetCustomAttributes(true)[0] as BindedPropAttribute).PropType == BindedPropType.IEnumerable)
                     {
-                        var oldCollection = prop.GetValue(entity) as List<IEntity>;
-                        var newCollection = prop.GetValue(newEntity) as List<IEntity>;
+                        var oldCollection = (prop.GetValue(entity) as IEnumerable<object>).ToList();
+                        var newCollection = (prop.GetValue(newEntity) as IEnumerable<object>).ToList();
 
-                        if (oldCollection.Count() > newCollection.Count())
+                        if (oldCollection.Count() >= newCollection.Count())
                         {
                             for (int i = 0; i < oldCollection.Count(); i++)
                             {
+                                var currentEntity = oldCollection[i] as IEntity;
                                 if (newCollection.Count() - 1 <= i)
                                 {
-                                    oldCollection[i].UpdateHistoryForChanges(newCollection[i], newEntity.Version);
+                                    currentEntity.UpdateHistoryForChanges(newCollection[i] as IEntity, newEntity.Version);
                                 }
                                 else
                                 {
-                                    var nestedProp = oldCollection[i]; ...
+                                    currentEntity.InitHistory(Version ?? 1);
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        var oldProp = prop.GetValue(entity) as IEntity;
-                        var newProp = prop.GetValue(newEntity) as IEntity;
-                        oldProp.UpdateHistoryForChanges(newProp);
+
+                        if (oldCollection.Count() < newCollection.Count())
+                        {
+                            for (int i = 0; i < newCollection.Count(); i++)
+                            {
+                                var currentEntity = newCollection[i] as IEntity;
+                                if (oldCollection.Count() - 1 <= i)
+                                {
+                                    currentEntity.UpdateHistoryForChanges(oldCollection[i] as IEntity, newEntity.Version);
+                                }
+                                else
+                                {
+                                    currentEntity.InitHistory(Version ?? 1);
+                                }
+                            }
+                        }
                     }
                 }
                 else
                 {
                     var oldValue = prop.GetValue(entity);
                     var newValue = prop.GetValue(newEntity);
-                    var historyProp = props
-                        .FirstOrDefault(current =>
-                            (current.GetCustomAttributes(true)[0] as HistoryPropAttribute).BindedProp == prop.Name);
-
+                    var historyProp = props.Where(curr => curr.GetCustomAttributes(true)
+                        .Any(att => att.GetType().FullName == typeof(HistoryPropAttribute).FullName))
+                        .FirstOrDefault(curr2 =>
+                            (curr2.GetCustomAttributes(true)
+                                .FirstOrDefault(att => att.GetType().FullName == typeof(HistoryPropAttribute).FullName) as HistoryPropAttribute)
+                                    .BindedProp == prop.Name);
                     var historyVal = historyProp?.GetValue(entity);
                     var valList = historyVal != null ? (historyVal as IEnumerable<VersionedProp>).OrderBy(prop => prop.Version) : Enumerable.Empty<VersionedProp>();
 
@@ -73,9 +92,9 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
             }
         }
 
-        public static void InitHistory(this IEntity entity)
+        public static void InitHistory(this IEntity entity, long version = 1)
         {
-            entity.Version = 1;
+            entity.Version = version;
             var props = entity.GetType().GetProperties();
             var versionedProps = props.Where(prop => prop.GetCustomAttributes(true)
                 .Any(att => att.GetType().FullName == typeof(BindedPropAttribute).FullName));
@@ -86,6 +105,17 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
                 {
                     var subProp = prop.GetValue(entity) as IEntity;
                     subProp.InitHistory();
+                }
+                else if (prop.PropertyType.Name.Contains("IEnumerable"))
+                {
+                    if ((prop.GetCustomAttributes(true)[0] as BindedPropAttribute).PropType == BindedPropType.IEnumerable)
+                    {
+                        var collection = prop.GetValue(entity) as IEnumerable<object>;
+                        foreach (var item in collection)
+                        {
+                            (item as IEntity).InitHistory();
+                        }
+                    }
                 }
                 else
                 {
