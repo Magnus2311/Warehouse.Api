@@ -15,7 +15,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      - name: Output Run ID
+        run: echo ${{ github.run_id }}
+      - name: Output Run Number
+        run: echo ${{ github.run_number }}
+      - name: Output Run Attempt
+        run: echo ${{ github.run_attempt }}
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/0.0.${{ github.run_number }}',
+              sha: context.sha
+            })
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -31,7 +50,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: .net-app
+          name: .net-app-0.0.${{ github.run_number }}
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
@@ -45,7 +64,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: .net-app
+          name: .net-app-0.0.${{ github.run_number }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
