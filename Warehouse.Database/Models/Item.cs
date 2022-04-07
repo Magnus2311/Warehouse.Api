@@ -18,5 +18,6 @@ namespace Warehouse.Database.Models
         public double SellPrice { get; set; }
         [HistoryProp(nameof(SellPrice))]
         public IEnumerable<VersionedProp> SellPrice_history { get; set; }
+        public IEnumerable<Provision> Provisions { get; set; } = new List<Provision>();
     }
 }

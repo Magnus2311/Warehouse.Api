@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MongoDB.Bson;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Warehouse.Api.Models.DTOs;
 using Warehouse.Database.Models;
@@ -35,5 +36,17 @@ namespace Warehouse.Api.Services
 
         public async Task Delete(string itemId)
             => await _repository.Delete(new ObjectId(itemId));
+
+        public async Task<BuyItemDTO> BuyItem(BuyItemDTO buyItemDTO)
+        {
+            var item = await _repository.Get(new ObjectId(buyItemDTO.ItemId));
+            item.Provisions = item.Provisions.Append(new Provision
+            {
+                Qtty = buyItemDTO.Qtty,
+                BasePrice = buyItemDTO.BasePrice
+            });
+            await _repository.Update(item);
+            return buyItemDTO;
+        }
     }
 }
