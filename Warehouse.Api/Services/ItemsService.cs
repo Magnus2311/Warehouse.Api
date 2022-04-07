@@ -52,6 +52,7 @@ namespace Warehouse.Api.Services
                 BasePrice = buyItemDTO.BasePrice
             });
             await _repository.Update(item);
+            buyItemDTO.BasePrice = item.Provisions.Average(p => p.BasePrice);
             return buyItemDTO;
         }
     }
