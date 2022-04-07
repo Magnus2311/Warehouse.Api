@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using MongoDB.Bson;
 using Warehouse.Api.Models.DTOs;
 using Warehouse.Database.Models;
@@ -12,7 +13,9 @@ namespace Warehouse.Api.Services.Mappers
             CreateMap<ItemDTO, Item>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? ObjectId.GenerateNewId() : ObjectId.Parse(src.Id)));
             CreateMap<Item, ItemDTO>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Qtty, opt => opt.MapFrom(src => src.Provisions.Select(p => p.Qtty).Sum()))
+                .ForMember(dest => dest.BasePrice, opt => opt.MapFrom(src => src.Provisions.Select(p => p.BasePrice).Average()));
 
             CreateMap<PartnerDTO, Partner>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? ObjectId.GenerateNewId() : ObjectId.Parse(src.Id)));

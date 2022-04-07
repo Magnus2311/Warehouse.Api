@@ -33,7 +33,7 @@ namespace Warehouse.Api.Controllers
         public async Task Delete([FromBody] string itemId)
                 => await _itemsService.Delete(itemId);
 
-        [HttpPost]
+        [HttpPost("buy-item")]
         public async Task<BuyItemDTO> BuyItem(BuyItemDTO buyItemDTO)
                 => await _itemsService.BuyItem(buyItemDTO);
     }

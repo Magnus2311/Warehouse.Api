@@ -24,6 +24,12 @@ namespace Warehouse.Api.Services
         public async Task<ItemDTO> Add(ItemDTO itemDto)
         {
             var item = _mapper.Map<Item>(itemDto);
+            item.Provisions = item.Provisions.Append(new Provision
+            {
+                Qtty = itemDto.Qtty,
+                BasePrice = itemDto.BasePrice
+            });
+
             await _repository.Add(item);
             return _mapper.Map<ItemDTO>(item);
         }
