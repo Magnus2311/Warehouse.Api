@@ -4,7 +4,8 @@
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public double BasePrice { get; set; }
-        public double SellPrice { get; set; }
+        public decimal Qtty { get; set; }
+        public decimal BasePrice { get; set; }
+        public decimal SellPrice { get; set; }
     }
 }
