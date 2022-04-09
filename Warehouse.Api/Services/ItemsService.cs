@@ -51,7 +51,7 @@ namespace Warehouse.Api.Services
                 Qtty = buyItemDTO.Qtty,
                 BasePrice = buyItemDTO.BasePrice
             });
-            await _repository.Update(item);
+            await _repository.UpdateWithoutHistory(item);
             buyItemDTO.BasePrice = item.Provisions.Average(p => p.BasePrice);
             return buyItemDTO;
         }
