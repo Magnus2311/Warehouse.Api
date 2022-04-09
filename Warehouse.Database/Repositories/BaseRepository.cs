@@ -32,7 +32,7 @@ namespace Warehouse.Database.Repositories
             entity.IsDeleted = true;
             await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
         }
-            
+
         public async Task<TEntity> Get(ObjectId id)
             => await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
 
@@ -54,5 +54,8 @@ namespace Warehouse.Database.Repositories
 
             await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
         }
+
+        public async Task UpdateWithoutHistory(TEntity entity)
+            => await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
     }
 }

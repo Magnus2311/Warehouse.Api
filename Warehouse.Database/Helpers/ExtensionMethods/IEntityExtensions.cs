@@ -11,11 +11,23 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
     {
         public static void UpdateHistoryForChanges(this IEntity entity, IEntity newEntity, long? Version = null)
         {
-            var props = entity.GetType().GetProperties();
+            var props = entity.GetType().GetProperties().ToList();
             var versionedProps = props.Where(prop => prop.GetCustomAttributes(true)
-                .Any(att => att.GetType().FullName == typeof(BindedPropAttribute).FullName));
+                .Any(att => att.GetType().FullName == typeof(BindedPropAttribute).FullName)).ToList();
             var historyProps = props.Where(prop => prop.GetCustomAttributes(true)
-                .Any(att => att.GetType().FullName == typeof(HistoryPropAttribute).FullName));
+                .Any(att => att.GetType().FullName == typeof(HistoryPropAttribute).FullName)).ToList();
+
+            foreach (var versionedProp in versionedProps)
+                props.Remove(versionedProp);
+
+            foreach (var historyProp in historyProps)
+                props.Remove(historyProp);
+
+            foreach (var prop in props)
+            {
+                var oldValue = prop.GetValue(entity);
+                prop.SetValue(newEntity, oldValue);
+            }
 
             foreach (var prop in versionedProps)
             {
@@ -69,7 +81,7 @@ namespace Warehouse.Database.Helpers.ExtensionMethods
                 {
                     var oldValue = prop.GetValue(entity);
                     var newValue = prop.GetValue(newEntity);
-                    var historyProp = props.Where(curr => curr.GetCustomAttributes(true)
+                    var historyProp = historyProps.Where(curr => curr.GetCustomAttributes(true)
                         .Any(att => att.GetType().FullName == typeof(HistoryPropAttribute).FullName))
                         .FirstOrDefault(curr2 =>
                             (curr2.GetCustomAttributes(true)
