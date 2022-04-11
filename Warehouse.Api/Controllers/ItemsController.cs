@@ -27,7 +27,11 @@ namespace Warehouse.Api.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<ItemDTO>> Get()
-                => await _itemsService.Get();
+                => await _itemsService.GetActive();
+
+        [HttpGet("get-all")]
+        public async Task<IEnumerable<ItemDTO>> GetAll()
+                => await _itemsService.GetAll();
 
         [HttpDelete]
         public async Task Delete([FromBody] string itemId)

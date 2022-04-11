@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Api.Models.DTOs;
@@ -27,7 +27,11 @@ namespace Warehouse.Api.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<SaleDTO>> Get()
-                => await _salesService.Get();
+                => await _salesService.GetActive();
+
+        [HttpGet("get-all")]
+        public async Task<IEnumerable<SaleDTO>> GetAll()
+                => await _salesService.GetAll();
 
         [HttpDelete]
         public async Task Delete([FromBody] string saleId)
