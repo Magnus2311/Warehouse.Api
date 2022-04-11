@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Warehouse.Database.Helpers.ExtensionMethods;
 using Warehouse.Database.Interfaces;
@@ -29,7 +30,14 @@ namespace Warehouse.Database.Repositories
         public async Task Delete(ObjectId id)
         {
             var entity = await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
+            entity.Version = ++entity.Version;
             entity.IsDeleted = true;
+            entity.IsDeleted_history = entity.IsDeleted_history.Append(new()
+            {
+                UpdatedDate = DateTime.Now,
+                Value = true,
+                Version = entity.Version
+            });
             await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
         }
 

@@ -36,7 +36,10 @@ namespace Warehouse.Database.Models
 
         [BsonId]
         public ObjectId Id { get; set; }
+        [BindedProp]
         public bool IsDeleted { get; set; }
+        [HistoryProp(nameof(IsDeleted))]
+        public IEnumerable<VersionedProp> IsDeleted_history { get; set; } = new List<VersionedProp>();
         public long Version { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
