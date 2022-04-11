@@ -28,7 +28,11 @@ namespace Warehouse.Api.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<PartnerDTO>> Get()
-                => await _partnersService.Get();
+                => await _partnersService.GetActive();
+
+        [HttpGet("get-all")]
+        public async Task<IEnumerable<PartnerDTO>> GetAll()
+                => await _partnersService.GetAll();
 
         [HttpDelete]
         public async Task Delete([FromBody] string partnerId)
