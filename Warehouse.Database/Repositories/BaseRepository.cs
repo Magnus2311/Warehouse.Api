@@ -41,6 +41,21 @@ namespace Warehouse.Database.Repositories
             await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
         }
 
+        public async Task<TEntity> Recover(ObjectId id)
+        {
+            var entity = await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
+            entity.Version = ++entity.Version;
+            entity.IsDeleted = false;
+            entity.IsDeleted_history = entity.IsDeleted_history.Append(new()
+            {
+                UpdatedDate = DateTime.Now,
+                Value = false,
+                Version = entity.Version
+            });
+            await _collection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id), entity);
+            return entity;
+        }
+
         public async Task<TEntity> Get(ObjectId id)
             => await (await _collection.FindAsync(e => e.Id == id)).FirstOrDefaultAsync();
 

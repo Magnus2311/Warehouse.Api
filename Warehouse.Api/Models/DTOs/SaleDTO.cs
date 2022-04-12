@@ -4,9 +4,8 @@ using System.Linq;
 
 namespace Warehouse.Api.Models.DTOs
 {
-    public class SaleDTO
+    public class SaleDTO : BaseDTO
     {
-        public string Id { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public IEnumerable<SaleItemDTO> SaleItems { get; set; } = Enumerable.Empty<SaleItemDTO>();
         public string PartnerId { get; set; }

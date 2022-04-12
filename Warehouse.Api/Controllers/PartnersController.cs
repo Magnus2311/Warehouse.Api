@@ -37,5 +37,9 @@ namespace Warehouse.Api.Controllers
         [HttpDelete]
         public async Task Delete([FromBody] string partnerId)
                 => await _partnersService.Delete(partnerId);
+
+        [HttpPost("partner-recovery")]
+        public async Task<PartnerDTO> RecoverItem([FromBody] string partnerId)
+                => await _partnersService.Recover(partnerId);
     }
 }

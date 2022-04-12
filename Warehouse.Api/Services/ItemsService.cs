@@ -47,6 +47,9 @@ namespace Warehouse.Api.Services
         public async Task Delete(string itemId)
             => await _repository.Delete(new ObjectId(itemId));
 
+        public async Task<ItemDTO> Recover(string itemId)
+            => _mapper.Map<ItemDTO>(await _repository.Recover(new ObjectId(itemId)));
+
         public async Task<BuyItemDTO> BuyItem(BuyItemDTO buyItemDTO)
         {
             var item = await _repository.Get(new ObjectId(buyItemDTO.ItemId));
