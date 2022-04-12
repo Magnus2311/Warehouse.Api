@@ -36,5 +36,9 @@ namespace Warehouse.Api.Controllers
         [HttpDelete]
         public async Task Delete([FromBody] string saleId)
                 => await _salesService.Delete(saleId);
+
+        [HttpPost("sale-recovery")]
+        public async Task<SaleDTO> RecoverItem([FromBody] string saleId)
+                => await _salesService.Recover(saleId);
     }
 }

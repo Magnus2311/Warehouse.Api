@@ -1,8 +1,7 @@
 ﻿namespace Warehouse.Api.Models.DTOs
 {
-    public class ItemDTO
+    public class ItemDTO : BaseDTO
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public decimal Qtty { get; set; }
         public decimal BasePrice { get; set; }

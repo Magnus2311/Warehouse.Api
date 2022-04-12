@@ -40,5 +40,9 @@ namespace Warehouse.Api.Controllers
         [HttpPost("buy-item")]
         public async Task<BuyItemDTO> BuyItem(BuyItemDTO buyItemDTO)
                 => await _itemsService.BuyItem(buyItemDTO);
+
+        [HttpPost("item-recovery")]
+        public async Task<ItemDTO> RecoverItem([FromBody] string itemId)
+                => await _itemsService.Recover(itemId);
     }
 }
