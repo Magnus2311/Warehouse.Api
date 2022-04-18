@@ -16,7 +16,9 @@ namespace Warehouse.Database
 
             _client = new MongoClient($"mongodb+srv://{_configuration["DB_Username"]}:{_configuration["DB_Password"]}{_configuration["DB_Cluster"]}.rdkdn.mongodb.net/warehouse?retryWrites=true&w=majority");
 
-            _db = _client.GetDatabase("warehouse");
+            bool.TryParse(_configuration["IsTesting"], out var isTesting);
+            string additionalCollection = isTesting ? $"-{_configuration["TestingCollection"]}" : "";
+            _db = _client.GetDatabase($"warehouse{additionalCollection}");
         }
     }
 }
