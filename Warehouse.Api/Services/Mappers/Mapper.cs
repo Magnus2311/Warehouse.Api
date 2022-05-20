@@ -15,7 +15,7 @@ namespace Warehouse.Api.Services.Mappers
             CreateMap<Item, ItemDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Qtty, opt => opt.MapFrom(src => src.Provisions.Sum(p => p.Qtty)))
-                .ForMember(dest => dest.BasePrice, opt => opt.MapFrom(src => src.Provisions.Select(p => p.BasePrice * p.Qtty).Average() / src.Provisions.Sum(p => p.Qtty)));
+                .ForMember(dest => dest.BasePrice, opt => opt.MapFrom(src => src.Provisions.Sum(p => p.Qtty) != 0 ? src.Provisions.Select(p => p.BasePrice * p.Qtty).Average() / src.Provisions.Sum(p => p.Qtty) : 0));
 
             CreateMap<PartnerDTO, Partner>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? ObjectId.GenerateNewId() : ObjectId.Parse(src.Id)));
