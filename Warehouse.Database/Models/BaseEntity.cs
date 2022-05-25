@@ -43,5 +43,6 @@ namespace Warehouse.Database.Models
         public long Version { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
+        public ObjectId UserId { get; set; }
     }
 }

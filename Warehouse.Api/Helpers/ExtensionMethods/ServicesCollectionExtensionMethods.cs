@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Warehouse.Api.Services;
+using Warehouse.Api.Services.Connections;
 using Warehouse.Api.Services.Mappers;
 using Warehouse.Database.Helpers;
-using Warehouse.Database.Interfaces;
 using Warehouse.Database.Repositories;
 
 namespace Warehouse.Api.Helpers.ExtensionMethods
@@ -21,6 +21,12 @@ namespace Warehouse.Api.Helpers.ExtensionMethods
                 .AddScoped<ItemsService>()
                 .AddScoped<PartnersService>()
                 .AddScoped<SalesService>();
+
+            services
+                .AddHttpClient<SsoConnectionService>();
+
+            services
+                .AddScoped<AppSettings>();
 
             services.AddMapper();
         }
