@@ -18,5 +18,6 @@ namespace Warehouse.Database.Interfaces
         public long Version { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime CreatedDate { get; set; }
+        public ObjectId UserId { get; set; }
     }
 }
