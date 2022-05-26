@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Warehouse.Api.Helpers.Attributes;
 using Warehouse.Api.Models.DTOs;
 using Warehouse.Api.Services;
 
 namespace Warehouse.Api.Controllers
 {
+    [SSO]
     [ApiController]
     [Route("api/[controller]")]
     public class PartnersController : ControllerBase
@@ -28,10 +29,18 @@ namespace Warehouse.Api.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<PartnerDTO>> Get()
-                => await _partnersService.Get();
+                => await _partnersService.GetActive();
+
+        [HttpGet("get-all")]
+        public async Task<IEnumerable<PartnerDTO>> GetAll()
+                    => await _partnersService.GetAll();
 
         [HttpDelete]
         public async Task Delete([FromBody] string partnerId)
                 => await _partnersService.Delete(partnerId);
+
+        [HttpPost("partner-recovery")]
+        public async Task<PartnerDTO> RecoverItem([FromBody] string partnerId)
+                => await _partnersService.Recover(partnerId);
     }
 }

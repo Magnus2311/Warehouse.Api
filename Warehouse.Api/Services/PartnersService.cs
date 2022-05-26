@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Api.Models.DTOs;
@@ -26,7 +27,10 @@ namespace Warehouse.Api.Services
             return _mapper.Map<PartnerDTO>(item);
         }
 
-        public async Task<IEnumerable<PartnerDTO>> Get()
+        public async Task<IEnumerable<PartnerDTO>> GetActive()
+            => _mapper.Map<IEnumerable<PartnerDTO>>(await _partnersRepository.GetActive());
+
+        public async Task<IEnumerable<PartnerDTO>> GetAll()
             => _mapper.Map<IEnumerable<PartnerDTO>>(await _partnersRepository.GetAll());
 
         public async Task Update(PartnerDTO itemDTO)
@@ -34,5 +38,8 @@ namespace Warehouse.Api.Services
 
         public async Task Delete(string itemId)
             => await _partnersRepository.Delete(new ObjectId(itemId));
+
+        public async Task<PartnerDTO> Recover(string partnerId)
+            => _mapper.Map<PartnerDTO>(await _partnersRepository.Recover(new ObjectId(partnerId)));
     }
 }

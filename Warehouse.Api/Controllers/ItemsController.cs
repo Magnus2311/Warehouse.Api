@@ -27,7 +27,11 @@ namespace Warehouse.Api.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<ItemDTO>> Get()
-                => await _itemsService.Get();
+                => await _itemsService.GetActive();
+
+        [HttpGet("get-all")]
+        public async Task<IEnumerable<ItemDTO>> GetAll()
+                => await _itemsService.GetAll();
 
         [HttpDelete]
         public async Task Delete([FromBody] string itemId)
@@ -36,5 +40,9 @@ namespace Warehouse.Api.Controllers
         [HttpPost("buy-item")]
         public async Task<BuyItemDTO> BuyItem(BuyItemDTO buyItemDTO)
                 => await _itemsService.BuyItem(buyItemDTO);
+
+        [HttpPost("item-recovery")]
+        public async Task<ItemDTO> RecoverItem([FromBody] string itemId)
+                => await _itemsService.Recover(itemId);
     }
 }

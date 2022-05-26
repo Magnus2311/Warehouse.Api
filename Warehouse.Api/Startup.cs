@@ -29,7 +29,7 @@ namespace Warehouse.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Warehouse.Api", Version = "v1" });
             });
-            
+
             services.AddCors(p => p.AddPolicy("corsapp", builder =>
             {
                 builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
@@ -64,6 +64,12 @@ namespace Warehouse.Api
             app.UseCors("corsapp");
             app.UseHttpsRedirection();
             app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                context.Request.EnableBuffering();
+                await next();
+            });
 
             app.UseEndpoints(endpoints =>
             {
