@@ -57,7 +57,14 @@ namespace Warehouse.Api.Helpers.Attributes
                 Console.WriteLine(ex);
             }
 
-            _context.Result = new UnauthorizedResult();
+            try
+            {
+                _context.HttpContext.Response.StatusCode = new UnauthorizedResult().StatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

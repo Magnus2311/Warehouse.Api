@@ -20,7 +20,7 @@ namespace Warehouse.Api.Services.Connections
         {
             try
             {
-                await _httpClient.GetStringAsync($"{_usersApiUrl}{token}");
+                return await _httpClient.GetStringAsync($"{_usersApiUrl}{token}");
             }
             catch (Exception ex)
             {
