@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,17 @@ namespace Warehouse.Api.Services.Connections
         }
 
         public async Task<string> ValidateToken(string token)
-            => await _httpClient.GetStringAsync($"{_usersApiUrl}{token}");
+        {
+            try
+            {
+                await _httpClient.GetStringAsync($"{_usersApiUrl}{token}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return null;
+        }
     }
 }
