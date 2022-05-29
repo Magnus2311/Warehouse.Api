@@ -16,7 +16,7 @@ namespace Warehouse.Api.Helpers.Attributes
     {
         private AuthorizationFilterContext _context;
 
-        public async void OnAuthorization(AuthorizationFilterContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Warehouse.Api.Helpers.Attributes
                     using (StreamReader reader
                       = new StreamReader(_context.HttpContext.Request.Body, Encoding.UTF8, true, 1024, true))
                     {
-                        var bodyStr = await reader.ReadToEndAsync();
+                        var bodyStr = reader.ReadToEndAsync().GetAwaiter().GetResult();
                         accessToken = JsonSerializer.Deserialize<JsonElement>(bodyStr).GetProperty("accessToken").GetString();
                         _context.HttpContext.Request.Body.Position = 0;
                     }
@@ -44,7 +44,7 @@ namespace Warehouse.Api.Helpers.Attributes
 
                 if (!string.IsNullOrEmpty(accessToken))
                 {
-                    var userId = await ssoConnectionService.ValidateToken(accessToken);
+                    var userId = ssoConnectionService.ValidateToken(accessToken).GetAwaiter().GetResult();
                     if (!string.IsNullOrEmpty(userId))
                     {
                         appSettings.UserId = new ObjectId(userId);

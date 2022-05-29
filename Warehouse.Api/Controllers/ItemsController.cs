@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Warehouse.Api.Helpers.Attributes;
 using Warehouse.Api.Models.DTOs;
 using Warehouse.Api.Services;
 
 namespace Warehouse.Api.Controllers
 {
+    [SSO]
     [ApiController]
     [Route("api/[controller]")]
     public class ItemsController : ControllerBase
